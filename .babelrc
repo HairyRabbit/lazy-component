@@ -1,0 +1,17 @@
+{
+    "presets": ["react", ["env", {
+        "target": {
+            "node": true
+        },
+        "modules": false,
+        "loose": true
+    }]],
+    "plugins": [
+        "transform-class-properties"
+    ],
+    "env": {
+        "test": {
+            "plugins": ["transform-es2015-modules-commonjs"]
+        }
+    }
+}

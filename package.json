@@ -1,0 +1,41 @@
+{
+    "name": "rabbit-lazy-component",
+    "version": "0.0.1",
+    "main": "lib/index.js",
+    "npmName": "LazyComponent",
+    "repository": "git@github.com:yuffiy/lazy-component.git",
+    "author": "Rabbit <yfhj1990@hotmail.com>",
+    "license": "GPL-3.0",
+    "devDependencies": {
+        "babel-core": "^6.26.0",
+        "babel-jest": "^21.0.2",
+        "babel-plugin-transform-class-properties": "^6.24.1",
+        "babel-preset-env": "^1.6.0",
+        "babel-preset-react": "^6.24.1",
+        "enzyme": "^2.9.1",
+        "flow-bin": "^0.54.1",
+        "jest": "^21.1.0",
+        "react": "^15.6.1",
+        "react-addons-test-utils": "^15.6.0",
+        "react-dom": "^15.6.1",
+        "react-test-renderer": "^15.6.1",
+        "rollup": "^0.50.0",
+        "rollup-plugin-babel": "^3.0.2",
+        "rollup-plugin-uglify": "^2.0.1"
+    },
+    "dependencies": {
+        "lodash": "^4.17.4",
+        "rabbit-promise-extra": "^0.0.3"
+    },
+    "peerDependencies": {
+        "react": "> 15.0"
+    },
+    "scripts": {
+        "test": "jest",
+        "typed": "flow",
+        "checkall": "yarn test && yarn typed",
+        "build:umd": "cross-env NODE_ENV=development rollup -c",
+        "build:umd:min": "cross-env NODE_ENV=production rollup -c",
+        "build": "yarn build:umd && yarn build:umd:min"
+    }
+}
