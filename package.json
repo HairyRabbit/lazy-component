@@ -1,6 +1,6 @@
 {
     "name": "rabbit-lazy-component",
-    "version": "0.0.4",
+    "version": "0.0.5",
     "main": "dist/lazy-component.js",
     "npmName": "LazyComponent",
     "repository": "git@github.com:yuffiy/lazy-component.git",
