@@ -1,6 +1,6 @@
 {
     "name": "rabbit-lazy-component",
-    "version": "0.0.2",
+    "version": "0.0.3",
     "main": "dist/lazy-component.js",
     "npmName": "LazyComponent",
     "repository": "git@github.com:yuffiy/lazy-component.git",
@@ -31,6 +31,10 @@
     "peerDependencies": {
         "lodash": ">= 4"
     },
+    "files": [
+        "dist",
+        "lib"
+    ],
     "scripts": {
         "test": "jest",
         "typed": "flow",
