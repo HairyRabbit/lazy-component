@@ -1,6 +1,5 @@
 [ignore]
 .*\.config\.js
-<PROJECT_ROOT>/node_modules/.*
 <PROJECT_ROOT>/dist/.*
 <PROJECT_ROOT>/tests/.*
 
