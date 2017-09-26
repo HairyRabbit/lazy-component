@@ -3,22 +3,16 @@ import babel     from 'rollup-plugin-babel'
 import uglify    from 'rollup-plugin-uglify'
 import pkg       from './package.json'
 
-const input     = pkg.main
+const input     = 'lib/index.js'
 const name      = startCase(pkg.npmName).replace(/\s/g, '')
 const format    = 'umd'
 const sourcemap = true
-const external = [
-  'lodash',
-  'react',
-  'rabbit-promise-extra'
-]
 const globals = {
-  'react': 'React',
-  'lodash': 'lodash',
   'rabbit-promise-extra': 'PromiseExtra'
 }
 
-let output, plugins
+let output, plugins = [ babel() ]
+
 
 if(process.env.NODE_ENV === 'development') {
   output = {
@@ -26,21 +20,14 @@ if(process.env.NODE_ENV === 'development') {
     format,
     sourcemap
   }
-  
-  plugins = [
-    babel()
-  ]
 } else {
   output = {
     file: 'dist/lazy-component.min.js',
     format,
     sourcemap
   }
-  
-  plugins = [
-    babel(),
-    uglify()
-  ]
+
+  plugins.push(uglify())
 }
 
 export default  {
@@ -48,6 +35,5 @@ export default  {
   output,
   name,
   plugins,
-  globals,
-  external
+  globals  
 }
