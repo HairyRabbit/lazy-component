@@ -1,11 +1,67 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`snapshots renders 1`] = `null`;
+exports[`Should load component async and handle errors. 1`] = `null`;
 
-exports[`snapshots renders 2`] = `
+exports[`Should load component async and handle errors. 2`] = `
+<div
+  id="error"
+>
+  42
+</div>
+`;
+
+exports[`Should load component async. 1`] = `null`;
+
+exports[`Should load component async. 2`] = `
 <div>
-  <h1>
+  <div>
     foo
-  </h1>
+  </div>
+  <div>
+    bar
+  </div>
+</div>
+`;
+
+exports[`should catch error when modules is not promise 1`] = `
+<div>
+  <div
+    id="error"
+  >
+    [LazyComponent] the argument modules should be a Promise, but got 42
+  </div>
+</div>
+`;
+
+exports[`should catch error when modules is not promise 2`] = `
+<div>
+  <div
+    id="error"
+  >
+    [LazyComponent] the argument modules should be a Promise, but got 42
+  </div>
+</div>
+`;
+
+exports[`should supports array type of modules 1`] = `null`;
+
+exports[`should supports array type of modules 2`] = `
+<div>
+  <div>
+    foo
+  </div>
+  <div>
+    bar
+  </div>
+</div>
+`;
+
+exports[`should supports signle promise of module 1`] = `null`;
+
+exports[`should supports signle promise of module 2`] = `
+<div>
+  <div>
+    foo
+  </div>
 </div>
 `;

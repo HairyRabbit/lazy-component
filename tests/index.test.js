@@ -1,14 +1,19 @@
 import React from 'react'
-import { mount } from 'enzyme'
+import Enzyme, { mount } from 'enzyme'
+import Adapter from 'enzyme-adapter-react-16' 
 import renderer from 'react-test-renderer'
 import LazyComponent from '../lib'
 
+Enzyme.configure({ adapter: new Adapter() })
 
-test('Should load component async.', (done) => {
-  const wrapper = mount(
+const Foo = () => (<div>foo</div>)
+const Bar = () => (<div>bar</div>)
+
+test('Should load component async.', done => {
+  const component = (
     <LazyComponent modules={{
-      foo: Promise.resolve(() => <h1>foo</h1>),
-      bar: Promise.resolve(() => <h2>bar</h2>)
+      foo: Promise.resolve(Foo),
+      bar: Promise.resolve(Bar)
     }}>
       {(error, modules) => (
         <div>
@@ -18,113 +23,153 @@ test('Should load component async.', (done) => {
       )}
     </LazyComponent>
   )
-
-  process.nextTick(() => {
-    expect(wrapper.find('h1').text()).toBe('foo')
-    expect(wrapper.find('h2').text()).toBe('bar')
-    done()
-  })
-})
-
-test('Should load component async and handle errors.', (done) => {
-  const error = new Error('42')
-  const wrapper = mount(
-    <LazyComponent modules={{
-      foo: Promise.resolve(() => <h1>foo</h1>),
-      bar: Promise.reject(error)
-    }}>
-      {(error, modules) => {
-        return <h1>{error.message}</h1>
-      }}
-    </LazyComponent>
-  )
-
-  process.nextTick(() => {
-    expect(wrapper.find('h1').text()).toBe('42')
-    done()
-  })
-})
-
-test('should supports array type of modules', (done) => {
-  const wrapper = mount(
-    <LazyComponent modules={[
-      Promise.resolve(() => <h1>foo</h1>),
-      Promise.resolve(() => <h2>bar</h2>)
-    ]}>
-      {(error, [Foo, Bar]) => (
-        <div>
-          <Foo />
-          <Bar />
-        </div>
-      )}
-    </LazyComponent>
-  )
-
-  process.nextTick(() => {
-    expect(wrapper.find('h1').text()).toBe('foo')
-    expect(wrapper.find('h2').text()).toBe('bar')
-    done()
-  })
-})
-
-test('should supports signle promise of module', (done) => {
-  const wrapper = mount(
-    <LazyComponent modules={Promise.resolve(() => <h1>foo</h1>)}>
-      {(error, Module) => (
-        <div>
-          <Module />
-        </div>
-      )}
-    </LazyComponent>
-  )
-
-  process.nextTick(() => {
-    expect(wrapper.find('h1').text()).toBe('foo')
-    done()
-  })
-})
-
-test('should throw error when modules is not promise', (done) => {
-  function throwTest() {
-    const wrapper = mount(
-        <LazyComponent modules={42}>
-        {(error, modules) => (
-            <div>
-            <modules />
-            </div>
-        )}
-      </LazyComponent>
-    )
-  }
-
-  process.nextTick(() => {
-    expect(throwTest).toThrow()
-    done()
-  })
-})
-
-
-/// Snapshots 
-
-test('snapshots renders', (done) => {
-  const component = renderer.create(
-    <LazyComponent modules={Promise.resolve(() => <h1>foo</h1>)}>
-      {(error, Module) => (
-        <div>
-          <Module />
-        </div>
-      )}
-    </LazyComponent>
-  )
+  
+  const wrapper  = mount(component)
+  const rendered = renderer.create(component)
 
   let tree
 
-  tree = component.toJSON()
+  tree = rendered.toJSON()
   expect(tree).toMatchSnapshot()
 
-  process.nextTick(() => {
-    tree = component.toJSON()
+  setTimeout(() => {
+    tree = rendered.toJSON()
     expect(tree).toMatchSnapshot()
+    
+    wrapper.update()
+    expect(wrapper.find(Foo).exists()).toBe(true)
+    expect(wrapper.find(Bar).exists()).toBe(true)
+    
     done()
   })
+})
+
+test('Should load component async and handle errors.', done => {
+  const error = new Error('42')
+  const component = (
+    <LazyComponent modules={{
+      foo: Promise.resolve(Foo),
+      bar: Promise.reject(error)
+    }}>
+      {(error, modules) => {
+        return <div id="error">{error.message}</div>
+      }}
+    </LazyComponent>
+  )
+  
+  const wrapper  = mount(component)
+  const rendered = renderer.create(component)
+
+  let tree
+
+  tree = rendered.toJSON()
+  expect(tree).toMatchSnapshot()
+
+  setTimeout(() => {
+    tree = rendered.toJSON()
+    expect(tree).toMatchSnapshot()
+
+    wrapper.update()
+    expect(wrapper.find(Foo).exists()).toBe(false)
+    expect(wrapper.find('#error').exists()).toBe(true)
+    
+    done()
+  }, 100)
+})
+
+test('should supports array type of modules', done => {
+  const component = (
+    <LazyComponent modules={[
+      Promise.resolve(Foo),
+      Promise.resolve(Bar)
+    ]}>
+      {(error, [C1, C2]) => (
+        <div>
+          <C1 />
+          <C2 />
+        </div>
+      )}
+    </LazyComponent>
+  )
+  
+  const wrapper  = mount(component)
+  const rendered = renderer.create(component)
+
+  let tree
+
+  tree = rendered.toJSON()
+  expect(tree).toMatchSnapshot()
+
+  setTimeout(() => {
+    tree = rendered.toJSON()
+    expect(tree).toMatchSnapshot()
+
+    wrapper.update()
+    expect(wrapper.find(Foo).exists()).toBe(true)
+    expect(wrapper.find(Bar).exists()).toBe(true)
+    
+    done()
+  }, 100)
+})
+
+test('should supports signle promise of module', done => {
+  const component = (
+    <LazyComponent modules={Promise.resolve(Foo)}>
+      {(error, Module) => (
+        <div>
+          <Module />
+        </div>
+      )}
+    </LazyComponent>
+  )
+
+  const wrapper  = mount(component)
+  const rendered = renderer.create(component)
+
+  let tree
+
+  tree = rendered.toJSON()
+  expect(tree).toMatchSnapshot()
+
+  setTimeout(() => {
+    tree = rendered.toJSON()
+    expect(tree).toMatchSnapshot()
+
+    wrapper.update()
+    expect(wrapper.find(Foo).exists()).toBe(true)
+    
+    done()
+  }, 100)
+})
+
+test('should catch error when modules is not promise', done => {
+  const component = (
+    <LazyComponent modules={42}>
+      {(error, modules) => (
+        <div>
+          <div id="error">{error.message}</div>
+        </div>
+      )}
+    </LazyComponent>
+  )
+
+  const wrapper  = mount(component)
+  const rendered = renderer.create(component)
+
+  let tree
+
+  tree = rendered.toJSON()
+  expect(tree).toMatchSnapshot()
+
+  setTimeout(() => {
+    tree = rendered.toJSON()
+    expect(tree).toMatchSnapshot()
+    
+    wrapper.update()
+    expect(wrapper.text()).toBe(`\
+[LazyComponent] the argument modules should be a Promise, \
+but got 42`)
+    
+    done()
+  }, 100)
 })
