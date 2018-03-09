@@ -2,6 +2,7 @@
 .*\.config\.js
 <PROJECT_ROOT>/dist/.*
 <PROJECT_ROOT>/tests/.*
+<PROJECT_ROOT>/node_modules/.*
 
 
 [include]
@@ -12,4 +13,3 @@
 
 [options]
 module.ignore_non_literal_requires=true
-

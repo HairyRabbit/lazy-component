@@ -8,7 +8,7 @@ const name      = startCase(pkg.npmName).replace(/\s/g, '')
 const format    = 'umd'
 const sourcemap = true
 const globals = {
-  'rabbit-promise-extra': 'PromiseExtra'
+  '@rabbitcc/promise-extra': 'PromiseExtra'
 }
 
 let output, plugins = [ babel() ]
@@ -35,5 +35,5 @@ export default  {
   output,
   name,
   plugins,
-  globals  
+  globals
 }

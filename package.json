@@ -1,5 +1,5 @@
 {
-    "name": "rabbit-lazy-component",
+    "name": "@rabbitcc/lazy-component",
     "version": "0.0.6",
     "main": "dist/lazy-component.js",
     "npmName": "LazyComponent",
@@ -28,7 +28,7 @@
         "rollup-plugin-uglify": "^2.0.1"
     },
     "dependencies": {
-        "rabbit-promise-extra": "^0.0.7"
+        "@rabbitcc/promise-extra": "^0.0.8"
     },
     "peerDependencies": {
         "lodash": ">= 4",
